@@ -116,7 +116,7 @@ class Msf(ConfigWatcher):
     def findjobs(self, name):
         jobs = self.jobs()
         pids = []
-        for pid, jobname in jobs.iteritems():
+        for pid, jobname in list(jobs.items()):
             if name in jobname:
                 pids.append(pid)
 
@@ -127,7 +127,7 @@ class Msf(ConfigWatcher):
 
     def sessionsfrompeer(self, peer):
         sessions = self.sessions()
-        for n, v in sessions.iteritems():
+        for n, v in list(sessions.items()):
             if peer in v['tunnel_peer']:
                 return n
         return None
@@ -151,9 +151,9 @@ if __name__ == '__main__':
   mod = client.call('module.exploits')
   
   # Grab the first item from the modules value of the returned dict
-  print "Compatible payloads for : %s\n" % mod['modules'][0]
+  print(("Compatible payloads for : %s\n" % mod['modules'][0]))
   
   # Get the list of compatible payloads for the first option
   ret = client.call('module.compatible_payloads',[mod['modules'][0]])
   for i in (ret.get('payloads')):
-    print "\t%s" % i
+    print(("\t%s" % i))

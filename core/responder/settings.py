@@ -17,7 +17,7 @@
 import os
 import sys
 import socket
-import utils
+from . import utils
 import logging
 
 from core.logger import logger
@@ -26,7 +26,7 @@ from core.configwatcher import ConfigWatcher
 __version__ = 'Responder 2.2'
 
 class Settings(ConfigWatcher):
-    
+ 
     def __init__(self):
         self.ResponderPATH = os.path.dirname(__file__)
         self.Bind_To = '0.0.0.0'
@@ -122,20 +122,20 @@ class Settings(ConfigWatcher):
         self.WPAD_Script      = self.config['Responder']['HTTP Server']['WPADScript']
 
         if not os.path.exists(self.Html_Filename):
-            print "Warning: %s: file not found" % self.Html_Filename
+            print(("Warning: %s: file not found" % self.Html_Filename))
 
         if not os.path.exists(self.Exe_Filename):
-            print "Warning: %s: file not found" % self.Exe_Filename
+            print(("Warning: %s: file not found" % self.Exe_Filename))
 
         # SSL Options
         self.SSLKey  = self.config['Responder']['HTTPS Server']['SSLKey']
         self.SSLCert = self.config['Responder']['HTTPS Server']['SSLCert']
 
         # Respond to hosts
-        self.RespondTo         = filter(None, [x.upper().strip() for x in self.config['Responder']['RespondTo'].strip().split(',')])
-        self.RespondToName     = filter(None, [x.upper().strip() for x in self.config['Responder']['RespondToName'].strip().split(',')])
-        self.DontRespondTo     = filter(None, [x.upper().strip() for x in self.config['Responder']['DontRespondTo'].strip().split(',')])
-        self.DontRespondToName = filter(None, [x.upper().strip() for x in self.config['Responder']['DontRespondToName'].strip().split(',')])
+        self.RespondTo         = [_f for _f in [x.upper().strip() for x in self.config['Responder']['RespondTo'].strip().split(',')] if _f]
+        self.RespondToName     = [_f for _f in [x.upper().strip() for x in self.config['Responder']['RespondToName'].strip().split(',')] if _f]
+        self.DontRespondTo     = [_f for _f in [x.upper().strip() for x in self.config['Responder']['DontRespondTo'].strip().split(',')] if _f]
+        self.DontRespondToName = [_f for _f in [x.upper().strip() for x in self.config['Responder']['DontRespondToName'].strip().split(',')] if _f]
 
         # CLI options
         self.Interface       = options.interface
@@ -162,7 +162,7 @@ class Settings(ConfigWatcher):
         self.NumChal = self.config['Responder']['Challenge']
 
         if len(self.NumChal) is not 16:
-            print "The challenge must be exactly 16 chars long.\nExample: 1122334455667788"
+            print("The challenge must be exactly 16 chars long.\nExample: 1122334455667788")
             sys.exit(-1)
 
         self.Challenge = ""

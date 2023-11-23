@@ -80,7 +80,7 @@ class AppCachePlugin(Plugin):
                             with open(p + '.append', 'r') as f:
                                 data += f.read()
 
-                    elif (section.get('tamper_url',False) == url) or (section.has_key('tamper_url_match') and re.search(section['tamper_url_match'], url)):
+                    elif (section.get('tamper_url',False) == url) or ('tamper_url_match' in section and re.search(section['tamper_url_match'], url)):
                         self.clientlog.info("Found URL in section '{}'!".format(name), extra=request.clientInfo)
                         p = self.getTemplatePrefix(section)
                         self.clientlog.info("Poisoning URL with tamper template: {}".format(p), extra=request.clientInfo)
@@ -134,7 +134,7 @@ class AppCachePlugin(Plugin):
         html = "<div style=\"position:absolute;left:-100px\">"
         for i in self.app_config:
             if isinstance(self.app_config[i], dict):
-                if self.app_config[i].has_key('tamper_url') and not self.app_config[i].get('skip_in_mass_poison', False):
+                if 'tamper_url' in self.app_config[i] and not self.app_config[i].get('skip_in_mass_poison', False):
                     html += "<iframe sandbox=\"\" style=\"opacity:0;visibility:hidden\" width=\"1\" height=\"1\" src=\"" + self.app_config[i]['tamper_url'] + "\"></iframe>" 
 
         return html + "</div>"
@@ -161,7 +161,7 @@ class AppCachePlugin(Plugin):
         return content
 
     def getTemplatePrefix(self, section):
-        if section.has_key('templates'):
+        if 'templates' in section:
             return self.app_config['templates_path'] + '/' + section['templates']
         
         return self.getDefaultTemplatePrefix()

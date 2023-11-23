@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import struct
-import settings
+from . import settings
 
 from base64 import b64decode, b64encode
-from odict import OrderedDict
+from .odict import OrderedDict
 
 # Packet class handling all packet generation (see odict.py).
 class Packet():
@@ -27,13 +27,13 @@ class Packet():
 	])
 	def __init__(self, **kw):
 		self.fields = OrderedDict(self.__class__.fields)
-		for k,v in kw.items():
+		for k,v in list(kw.items()):
 			if callable(v):
 				self.fields[k] = v(self.fields[k])
 			else:
 				self.fields[k] = v
 	def __str__(self):
-		return "".join(map(str, self.fields.values()))
+		return "".join(map(str, list(self.fields.values())))
 
 # NBT Answer Packet
 class NBT_Ans(Packet):

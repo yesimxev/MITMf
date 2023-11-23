@@ -71,7 +71,7 @@ class ProxyPlugins:
         '''Load a plugin'''
         self.plugin_list.append(p)
         log.debug("Adding {} plugin".format(p.name))
-        for mthd,pmthd in self.mthdDict.iteritems():
+        for mthd,pmthd in list(self.mthdDict.items()):
             try:
                 self.plugin_mthds[mthd].append(getattr(p,pmthd))
             except KeyError:
@@ -81,7 +81,7 @@ class ProxyPlugins:
         '''Unload a plugin'''
         self.plugin_list.remove(p)
         log.debug("Removing {} plugin".format(p.name))
-        for mthd,pmthd in self.mthdDict.iteritems():
+        for mthd,pmthd in list(self.mthdDict.items()):
             try:
                 self.plugin_mthds[mthd].remove(getattr(p,pmthd))
             except KeyError:

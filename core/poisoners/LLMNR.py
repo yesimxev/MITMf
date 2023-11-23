@@ -23,7 +23,7 @@ import threading
 from traceback import print_exc
 from core.responder.packets import LLMNR_Ans
 from core.responder.odict import OrderedDict
-from SocketServer import BaseRequestHandler, ThreadingMixIn, UDPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, UDPServer
 from core.responder.utils import *
 
 def start():
@@ -33,7 +33,7 @@ def start():
         t.setDaemon(True)
         t.start()
     except Exception as e:
-        print "Error starting LLMNR server on port 5355: {}".format(e)
+        print(("Error starting LLMNR server on port 5355: {}".format(e)))
 
 class ThreadingUDPLLMNRServer(ThreadingMixIn, UDPServer):
 

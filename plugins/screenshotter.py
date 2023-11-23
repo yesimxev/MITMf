@@ -19,7 +19,7 @@
 #
 
 import base64
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 
 from datetime import datetime
@@ -45,7 +45,7 @@ class ScreenShotter(Inject, Plugin):
             img_file = '{}-{}-{}.png'.format(client, request.headers['host'], datetime.now().strftime("%Y-%m-%d_%H:%M:%S:%s"))
             try:
                 with open('./logs/' + img_file, 'wb') as img:
-                    img.write(base64.b64decode(urllib.unquote(request.postData).decode('utf8').split(',')[1]))
+                    img.write(base64.b64decode(urllib.parse.unquote(request.postData).decode('utf8').split(',')[1]))
 
                 self.clientlog.info('Saved screenshot to {}'.format(img_file), extra=request.clientInfo)
             except Exception as e:

@@ -20,7 +20,7 @@ import core.responder.settings as settings
 import threading
 from traceback import print_exc
 
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer, UDPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer, UDPServer
 from core.responder.utils import *
 
 class Kerberos:
@@ -39,7 +39,7 @@ class Kerberos:
                 t.setDaemon(True)
                 t.start()
         except Exception as e:
-            print "Error starting Kerberos server: {}".format(e)
+            print(("Error starting Kerberos server: {}".format(e)))
             print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):

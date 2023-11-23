@@ -8,11 +8,11 @@ import binascii
 from core.logger import logger
 from os import geteuid, devnull
 from sys import exit
-from urllib import unquote
+from urllib.parse import unquote
 from collections import OrderedDict
-from BaseHTTPServer import BaseHTTPRequestHandler
-from StringIO import StringIO
-from urllib import unquote
+from http.server import BaseHTTPRequestHandler
+from io import StringIO
+from urllib.parse import unquote
 
 from scapy.all import *
 conf.verb=0

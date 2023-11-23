@@ -20,7 +20,7 @@ import threading
 
 from core.responder.utils import *
 from base64 import b64decode, b64encode
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.packets import SMTPGreeting, SMTPAUTH, SMTPAUTH1, SMTPAUTH2
 
 class SMTP:
@@ -39,7 +39,7 @@ class SMTP:
 				t.setDaemon(True)
 				t.start()
 		except Exception as e:
-			print "Error starting SMTP server: {}".format(e)
+			print(("Error starting SMTP server: {}".format(e)))
 			print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):
@@ -72,7 +72,7 @@ class ESMTP(BaseRequestHandler):
 				
 				if data:
 					try:
-						User = filter(None, b64decode(data).split('\x00'))
+						User = [_f for _f in b64decode(data).split('\x00') if _f]
 						Username = User[0]
 						Password = User[1]
 					except:

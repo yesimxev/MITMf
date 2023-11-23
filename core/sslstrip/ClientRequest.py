@@ -16,7 +16,7 @@
 # USA
 #
 
-import urlparse 
+import urllib.parse 
 import logging 
 import os 
 import sys 
@@ -33,12 +33,12 @@ from twisted.internet import defer
 from twisted.internet import reactor
 from twisted.internet.protocol import ClientFactory
 
-from ServerConnectionFactory import ServerConnectionFactory
-from ServerConnection import ServerConnection
-from SSLServerConnection import SSLServerConnection
-from URLMonitor import URLMonitor
-from CookieCleaner import CookieCleaner
-from DnsCache import DnsCache
+from .ServerConnectionFactory import ServerConnectionFactory
+from .ServerConnection import ServerConnection
+from .SSLServerConnection import SSLServerConnection
+from .URLMonitor import URLMonitor
+from .CookieCleaner import CookieCleaner
+from .DnsCache import DnsCache
 from core.logger import logger
 
 formatter = logging.Formatter("%(asctime)s [ClientRequest] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
@@ -73,7 +73,7 @@ class ClientRequest(Request):
             if 'referer' in headers:
                 real = self.urlMonitor.real
                 if len(real) > 0:
-                    dregex = re.compile("({})".format("|".join(map(re.escape, real.keys()))))
+                    dregex = re.compile("({})".format("|".join(map(re.escape, list(real.keys())))))
                     headers['referer'] = dregex.sub(lambda x: str(real[x.string[x.start() :x.end()]]), headers['referer'])
 
             if 'host' in headers:
@@ -139,12 +139,12 @@ class ClientRequest(Request):
             self.uri  = url # set URI to absolute
 
             if real:
-                dregex = re.compile("({})".format("|".join(map(re.escape, real.keys()))))
+                dregex = re.compile("({})".format("|".join(map(re.escape, list(real.keys())))))
                 path = dregex.sub(lambda x: str(real[x.string[x.start() :x.end()]]), path)
                 postData = dregex.sub(lambda x: str(real[x.string[x.start() :x.end()]]), postData)
                 
                 if patchDict:
-                    dregex = re.compile("({})".format("|".join(map(re.escape, patchDict.keys()))))
+                    dregex = re.compile("({})".format("|".join(map(re.escape, list(patchDict.keys())))))
                     postData = dregex.sub(lambda x: str(patchDict[x.string[x.start() :x.end()]]), postData)
 
             

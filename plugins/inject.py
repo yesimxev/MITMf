@@ -49,12 +49,11 @@ class Inject(Plugin):
         self.white_ips     = options.white_ips.split(',')
         self.white_domains = options.white_domains.split(',')
         self.black_domains = options.black_domains.split(',')
-        
+
         self.ctable        = {}
         self.dtable        = {}
         self.count         = 0
 
-    
     def response(self, response, request, data):
 
         encoding = None
@@ -86,9 +85,9 @@ class Inject(Plugin):
 
         if self._should_inject(ip, hn) and self._ip_filter(ip) and self._host_filter(hn) and (hn not in self.ip) and ("text/html" in mime):
 
-    	    if encoding is not None:
+            if encoding is not None:
                 html = BeautifulSoup(data.decode(encoding, "ignore"), "lxml")
-    	    else:
+            else:
                 html = BeautifulSoup(data, "lxml")
 
             if html.body:

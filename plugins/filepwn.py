@@ -177,7 +177,7 @@ class FilePwn(Plugin):
 
         members = tar_file.getmembers()
         for info in members:
-            print "\t{0} {1}".format(info.name, info.size)
+            print(("\t{0} {1}".format(info.name, info.size)))
 
         new_tar_storage = tempfile.NamedTemporaryFile()
         new_tar_file = tarfile.open(mode='w' + compression_mode, fileobj=new_tar_storage)
@@ -193,7 +193,7 @@ class FilePwn(Plugin):
                 new_tar_file.addfile(info, tar_file.extractfile(info))
                 continue
 
-            if info.size >= long(self.FileSizeMax):
+            if info.size >= int(self.FileSizeMax):
                 self.log.warning("{0} is too big, skipping".format(info.name))
                 new_tar_file.addfile(info, tar_file.extractfile(info))
                 continue
@@ -268,7 +268,7 @@ class FilePwn(Plugin):
         self.log.info("ZipFile contents and info:")
 
         for info in zippyfile.infolist():
-            print "\t{0} {1}".format(info.filename, info.file_size)
+            print(("\t{0} {1}".format(info.filename, info.file_size)))
 
         tmpDir = tempfile.mkdtemp()
         zippyfile.extractall(tmpDir)
@@ -284,7 +284,7 @@ class FilePwn(Plugin):
                 self.log.warning("{0} is not a file, skipping".format(info.filename))
                 continue
 
-            if os.lstat(actual_file).st_size >= long(self.FileSizeMax):
+            if os.lstat(actual_file).st_size >= int(self.FileSizeMax):
                 self.log.warning("{0} is too big, skipping".format(info.filename))
                 continue
 
@@ -591,7 +591,7 @@ class FilePwn(Plugin):
                     break
 
     def parse_target_config(self, targetConfig):
-        for key, value in targetConfig.items():
+        for key, value in list(targetConfig.items()):
             if hasattr(self, key) is False:
                 setattr(self, key, value)
                 self.log.debug("Settings Config {0}: {1}".format(key, value))
@@ -602,7 +602,7 @@ class FilePwn(Plugin):
 
                 # test if string can be easily converted to dict
                 if ':' in str(value):
-                    for tmpkey, tmpvalue in dict(value).items():
+                    for tmpkey, tmpvalue in list(dict(value).items()):
                         getattr(self, key, value)[tmpkey] = tmpvalue
                         self.log.debug("Updating Config {0}: {1}".format(tmpkey, tmpvalue))
                 else:
@@ -620,7 +620,7 @@ class FilePwn(Plugin):
         else:
             content_length = int(response.responseHeaders.getRawHeaders('content-length')[0])
 
-        for target in self.user_config['targets'].keys():
+        for target in list(self.user_config['targets'].keys()):
             if target == 'ALL':
                 self.parse_target_config(self.user_config['targets']['ALL'])
 
@@ -632,7 +632,7 @@ class FilePwn(Plugin):
         self.keys_backlist_check(request.uri, host)
         self.hosts_blacklist_check(host)
 
-        if content_length and (content_length >= long(self.FileSizeMax)):
+        if content_length and (content_length >= int(self.FileSizeMax)):
                 self.clientlog.info("Not patching over content-length, forwarding to user", extra=request.clientInfo)
                 self.patchIT = False
 

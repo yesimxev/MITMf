@@ -20,7 +20,7 @@ import threading
 from traceback import print_exc
 
 from core.responder.utils import *
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.packets import POPOKPacket
 
 class POP3:
@@ -36,7 +36,7 @@ class POP3:
 			t.setDaemon(True)
 			t.start()
 		except Exception as e:
-			print "Error starting POP3 server: {}".format(e)
+			print(("Error starting POP3 server: {}".format(e)))
 			print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):

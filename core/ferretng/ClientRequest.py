@@ -16,7 +16,7 @@
 # USA
 #
 
-import urlparse 
+import urllib.parse 
 import logging 
 import os 
 import sys 
@@ -33,12 +33,12 @@ from twisted.internet import reactor
 from twisted.internet.protocol import ClientFactory
 
 from core.logger import logger
-from ServerConnectionFactory import ServerConnectionFactory
-from ServerConnection import ServerConnection
-from SSLServerConnection import SSLServerConnection
-from URLMonitor import URLMonitor
-from CookieCleaner import CookieCleaner
-from DnsCache import DnsCache
+from .ServerConnectionFactory import ServerConnectionFactory
+from .ServerConnection import ServerConnection
+from .SSLServerConnection import SSLServerConnection
+from .URLMonitor import URLMonitor
+from .CookieCleaner import CookieCleaner
+from .DnsCache import DnsCache
 
 formatter = logging.Formatter("%(asctime)s [Ferret-NG] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 log = logger().setup_logger("Ferret_ClientRequest", formatter)

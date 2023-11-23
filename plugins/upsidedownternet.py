@@ -16,7 +16,7 @@
 # USA
 #
 
-from cStringIO import StringIO
+from io import StringIO
 from plugins.plugin import Plugin
 from PIL import Image, ImageFile
 

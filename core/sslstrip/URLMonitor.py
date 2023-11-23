@@ -118,7 +118,7 @@ class URLMonitor:
         if self.hsts:
             self.updateHstsConfig()
 
-            if not self.sustitucion.has_key(host):
+            if host not in self.sustitucion:
                 lhost = host[:4]
                 if lhost=="www.":
                     self.sustitucion[host] = "w"+host
@@ -145,7 +145,7 @@ class URLMonitor:
         self.faviconSpoofing = faviconSpoofing
 
     def updateHstsConfig(self):
-        for k,v in ConfigWatcher().config['SSLstrip+'].iteritems():
+        for k,v in list(ConfigWatcher().config['SSLstrip+'].items()):
             self.sustitucion[k] = v
             self.real[v] = k
 
@@ -166,7 +166,7 @@ class URLMonitor:
 
         self.updateHstsConfig()
 
-        if self.real.has_key(host):
+        if host in self.real:
             log.debug("Found host in list: {}".format(self.real[host]))
             return self.real[host]
 

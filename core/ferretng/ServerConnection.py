@@ -22,12 +22,12 @@ import string
 import random 
 import zlib 
 import gzip
-import StringIO
+import io
 import sys
 
 from core.logger import logger
 from twisted.web.http import HTTPClient
-from URLMonitor import URLMonitor
+from .URLMonitor import URLMonitor
 
 formatter = logging.Formatter("%(asctime)s [Ferret-NG] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 log = logger().setup_logger("Ferret_ServerConnection", formatter)
@@ -73,7 +73,7 @@ class ServerConnection(HTTPClient):
         self.sendCommand(self.command, self.uri)
 
     def sendHeaders(self):
-        for header, value in self.headers.iteritems():
+        for header, value in list(self.headers.items()):
             log.debug("[ServerConnection] Sending header: ({}: {})".format(header, value))
             self.sendHeader(header, value)
 
@@ -129,7 +129,7 @@ class ServerConnection(HTTPClient):
             self.shutdown()
 
         if logging.getLevelName(log.getEffectiveLevel()) == "DEBUG":
-            for header, value in self.client.headers.iteritems():
+            for header, value in list(self.client.headers.items()):
                 log.debug("[ServerConnection] Receiving header: ({}: {})".format(header, value)) 
 
     def handleResponsePart(self, data):
@@ -150,7 +150,7 @@ class ServerConnection(HTTPClient):
     def handleResponse(self, data):
         if (self.isCompressed):
             log.debug("[ServerConnection] Decompressing content...")
-            data = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(data)).read()
+            data = gzip.GzipFile('', 'rb', 9, io.StringIO(data)).read()
 
         data = self.replaceSecureLinks(data)
 

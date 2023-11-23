@@ -20,7 +20,7 @@ import threading
 import core.responder.settings as settings
 
 from core.responder.packets import SMBHeader, SMBNegoData, SMBSessionData, SMBTreeConnectData, RAPNetServerEnum3Data, SMBTransRAPData
-from SocketServer import BaseRequestHandler, ThreadingMixIn, UDPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, UDPServer
 from core.responder.utils import *
 
 def start():
@@ -30,7 +30,7 @@ def start():
 		t.setDaemon(True)
 		t.start()
 	except Exception as e:
-		print "Error starting Browser server on port 138: {}".format(e)
+		print(("Error starting Browser server on port 138: {}".format(e)))
 
 class ThreadingUDPServer(ThreadingMixIn, UDPServer):
 	def server_bind(self):
@@ -189,7 +189,7 @@ def BecomeBackup(data,Client):
 
 			if settings.Config.AnalyzeMode:
 				settings.Config.AnalyzeLogger.warning("[Analyze mode: Browser] Datagram Request from IP: %s hostname: %s via the: %s wants to become a Local Master Browser Backup on this domain: %s."%(Client, Name,Role,Domain))
-				print RAPThisDomain(Client, Domain)
+				print((RAPThisDomain(Client, Domain)))
 
 	except:
 		pass
@@ -204,7 +204,7 @@ def ParseDatagramNBTNames(data,Client):
 	
 		if Role2 == "Domain Controller" or Role2 == "Browser Election" or Role2 == "Local Master Browser" and settings.Config.AnalyzeMode:
 			settings.Config.AnalyzeLogger.warning('[Analyze mode: Browser] Datagram Request from IP: %s hostname: %s via the: %s to: %s. Service: %s' % (Client, Name, Role1, Domain, Role2))
-			print RAPThisDomain(Client, Domain)
+			print((RAPThisDomain(Client, Domain)))
 	except:
 		pass
 

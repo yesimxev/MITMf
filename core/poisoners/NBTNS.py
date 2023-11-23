@@ -20,7 +20,7 @@ import core.responder.settings as settings
 import core.responder.fingerprint as fingerprint
 
 from core.responder.packets import NBT_Ans
-from SocketServer import BaseRequestHandler, ThreadingMixIn, UDPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, UDPServer
 from core.responder.utils import *
 
 def start():
@@ -30,7 +30,7 @@ def start():
 		t.setDaemon(True)
 		t.start()
 	except Exception as e:
-		print "Error starting NBTNS server on port 137: {}".format(e)
+		print(("Error starting NBTNS server on port 137: {}".format(e)))
 
 class ThreadingUDPServer(ThreadingMixIn, UDPServer):
 	

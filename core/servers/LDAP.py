@@ -20,7 +20,7 @@ import core.responder.settings as settings
 import threading
 from traceback import print_exc
 
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.packets import LDAPSearchDefaultPacket, LDAPSearchSupportedCapabilitiesPacket, LDAPSearchSupportedMechanismsPacket, LDAPNTLMChallenge
 from core.responder.utils import *
 
@@ -37,7 +37,7 @@ class LDAP:
 			t.setDaemon(True)
 			t.start()
 		except Exception as e:
-			print "Error starting LDAP server: {}".format(e)
+			print(("Error starting LDAP server: {}".format(e)))
 			print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):

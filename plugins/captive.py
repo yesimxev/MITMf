@@ -20,7 +20,7 @@
 # config/responder/AccessDenied.html for now
 
 from plugins.plugin import Plugin
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 
 class Captive(Plugin):
@@ -86,10 +86,10 @@ class Captive(Plugin):
     def serve_dir(self, dir):
         import threading
         import posixpath
-        import urllib
+        import urllib.request, urllib.parse, urllib.error
         import os
-        from SimpleHTTPServer import SimpleHTTPRequestHandler
-        from BaseHTTPServer import HTTPServer as ServerClass
+        from http.server import SimpleHTTPRequestHandler
+        from http.server import HTTPServer as ServerClass
         Protocol     = "HTTP/1.0"
         port         = self.config['Captive']['Port']
         ServerString = self.config['Captive']['ServerString']
@@ -117,9 +117,9 @@ class Captive(Plugin):
                 # normalize path and prepend root directory
                 path = path.split('?',1)[0]
                 path = path.split('#',1)[0]
-                path = posixpath.normpath(urllib.unquote(path))
+                path = posixpath.normpath(urllib.parse.unquote(path))
                 words = path.split('/')
-                words = filter(None, words)
+                words = [_f for _f in words if _f]
 
                 path = root
                 for word in words:

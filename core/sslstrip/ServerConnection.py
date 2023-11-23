@@ -22,12 +22,12 @@ import string
 import random
 import zlib
 import gzip
-import StringIO
+import io
 import sys
 
 from user_agents import parse
 from twisted.web.http import HTTPClient
-from URLMonitor import URLMonitor
+from .URLMonitor import URLMonitor
 from core.proxyplugins import ProxyPlugins
 from core.logger import logger
 
@@ -82,7 +82,7 @@ class ServerConnection(HTTPClient):
         self.sendCommand(self.command, self.uri)
 
     def sendHeaders(self):
-        for header, value in self.headers.iteritems():
+        for header, value in list(self.headers.items()):
             log.debug("Sending header: ({}: {})".format(header, value))
             self.sendHeader(header, value)
 
@@ -179,7 +179,7 @@ class ServerConnection(HTTPClient):
         self.plugins.hook()
 
         if logging.getLevelName(log.getEffectiveLevel()) == "DEBUG":
-            for header, value in self.headers.iteritems():
+            for header, value in list(self.headers.items()):
                 log.debug("Receiving header: ({}: {})".format(header, value)) 
 
     def handleResponsePart(self, data):
@@ -201,7 +201,7 @@ class ServerConnection(HTTPClient):
     def handleResponse(self, data):
         if (self.isCompressed):
             log.debug("Decompressing content...")
-            data = gzip.GzipFile('', 'rb', 9, StringIO.StringIO(data)).read()
+            data = gzip.GzipFile('', 'rb', 9, io.StringIO(data)).read()
 
         data = self.replaceSecureLinks(data)
         data = self.plugins.hook()['data']
@@ -229,7 +229,7 @@ class ServerConnection(HTTPClient):
             patchDict = self.urlMonitor.patchDict
 
             if patchDict:
-                dregex = re.compile("({})".format("|".join(map(re.escape, patchDict.keys()))))
+                dregex = re.compile("({})".format("|".join(map(re.escape, list(patchDict.keys())))))
                 data = dregex.sub(lambda x: str(patchDict[x.string[x.start() :x.end()]]), data)
 
             iterator = re.finditer(ServerConnection.urlExpression, data)       
@@ -242,7 +242,7 @@ class ServerConnection(HTTPClient):
                 sustitucion[url] = nuevaurl
 
             if sustitucion:
-                dregex = re.compile("({})".format("|".join(map(re.escape, sustitucion.keys()))))
+                dregex = re.compile("({})".format("|".join(map(re.escape, list(sustitucion.keys())))))
                 data = dregex.sub(lambda x: str(sustitucion[x.string[x.start() :x.end()]]), data)
 
             return data

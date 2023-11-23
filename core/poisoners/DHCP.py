@@ -74,7 +74,7 @@ class DHCPpoisoner():
                 if (field is tuple) and (field[0] == 'requested_addr'):
                     return field[1]
 
-        if xid in self.dhcp_dic.keys():
+        if xid in list(self.dhcp_dic.keys()):
             client_ip = self.dhcp_dic[xid]
             return 'stored', client_ip
 

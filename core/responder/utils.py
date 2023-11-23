@@ -20,7 +20,7 @@ import re
 import logging
 import socket
 import time
-import settings
+from . import settings
 import sqlite3
 
 def RespondToThisIP(ClientIp):
@@ -191,7 +191,7 @@ def Decode_Name(nbname):
 		for i in range(0, 32, 2):
 			l.append(chr(((ord(nbname[i]) - 0x41) << 4) | ((ord(nbname[i+1]) - 0x41) & 0xf)))
 		
-		return filter(lambda x: x in printable, ''.join(l).split('\x00', 1)[0].replace(' ', ''))
+		return [x for x in ''.join(l).split('\x00', 1)[0].replace(' ', '') if x in printable]
 	
 	except:
 		return "Illegal NetBIOS name"

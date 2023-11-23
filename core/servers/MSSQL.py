@@ -19,7 +19,7 @@ import struct
 import core.responder.settings as settings
 import threading
 
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.packets import MSSQLPreLoginAnswer, MSSQLNTLMChallengeAnswer
 from core.responder.utils import *
 
@@ -36,7 +36,7 @@ class MSSQL:
 			t.setDaemon(True)
 			t.start()
 		except Exception as e:
-			print "Error starting MSSQL server: {}".format(e)
+			print(("Error starting MSSQL server: {}".format(e)))
 			print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):
@@ -127,7 +127,7 @@ def ParseSQLHash(data, client):
 		})
 
 def ParseSqlClearTxtPwd(Pwd):
-	Pwd = map(ord,Pwd.replace('\xa5',''))
+	Pwd = list(map(ord,Pwd.replace('\xa5','')))
 	Pw = []
 	for x in Pwd:
 		Pw.append(hex(x ^ 0xa5)[::-1][:2].replace("x","0").decode('hex'))

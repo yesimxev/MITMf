@@ -19,7 +19,7 @@ import core.responder.settings as settings
 import threading
 
 from core.responder.utils import *
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.packets import IMAPGreeting, IMAPCapability, IMAPCapabilityEnd
 
 class IMAP:
@@ -35,7 +35,7 @@ class IMAP:
 			t.setDaemon(True)
 			t.start()
 		except Exception as e:
-			print "Error starting IMAP server: {}".format(e)
+			print(("Error starting IMAP server: {}".format(e)))
 			print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):

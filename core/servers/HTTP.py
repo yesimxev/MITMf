@@ -19,7 +19,7 @@ import struct
 import core.responder.settings as settings
 import threading
 
-from SocketServer import BaseServer, BaseRequestHandler, StreamRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseServer, BaseRequestHandler, StreamRequestHandler, ThreadingMixIn, TCPServer
 from base64 import b64decode, b64encode
 from core.responder.utils import *
 
@@ -59,7 +59,7 @@ class HTTP:
 			t.start()
 
 		except Exception as e:
-			print "Error starting HTTP server: {}".format(e)
+			print(("Error starting HTTP server: {}".format(e)))
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):
     

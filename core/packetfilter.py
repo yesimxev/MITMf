@@ -28,7 +28,7 @@ class PacketFilter:
 
         for filter in self.filter:
             try:
-                execfile(filter)
+                exec(compile(open(filter, "rb").read(), filter, 'exec'))
             except Exception:
                 log.debug("Error occurred in filter", filter)
                 print_exc()

@@ -99,7 +99,7 @@ class BrowserSniper(BrowserProfiler, Plugin):
 
         self.log.info("{} => OS: {} | Browser: {} | Java: {} | Flash: {}".format(vic_ip, os, browser, java, flash))
 
-        for exploit, details in self.config['BrowserSniper']['exploits'].iteritems():
+        for exploit, details in list(self.config['BrowserSniper']['exploits'].items()):
 
             if self._compat_system(details['OS'].lower(), details['Browser'].lower(), os.lower(), browser.lower()):
 

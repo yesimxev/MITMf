@@ -21,7 +21,7 @@ import socket
 
 from random import randrange
 from core.responder.packets import SMBHeader, SMBNegoAnsLM, SMBNegoAns, SMBNegoKerbAns, SMBSession1Data, SMBSession2Accept, SMBSessEmpty, SMBTreeData
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.utils import *
 
 class SMB:
@@ -40,7 +40,7 @@ class SMB:
                 t.setDaemon(True)
                 t.start()
         except Exception as e:
-            print "Error starting SMB server: {}".format(e)
+            print(("Error starting SMB server: {}".format(e)))
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):
     
@@ -109,8 +109,8 @@ def Parse_Nego_Dialect(data):
         if Dialect[15] == "NT LM 0.12":
             return "\x0f\x00"
     except Exception:
-        print 'Exception on Parse_Nego_Dialect! Packet hexdump:'
-        print hexdump(packet)
+        print('Exception on Parse_Nego_Dialect! Packet hexdump:')
+        print((hexdump(packet)))
 
 #Set MID SMB Header field.
 def midcalc(data):

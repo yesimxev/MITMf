@@ -18,7 +18,7 @@ import os
 import threading
 
 from core.responder.utils import *
-from SocketServer import BaseRequestHandler, ThreadingMixIn, TCPServer
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
 from core.responder.packets import FTPPacket
 
 class FTP:
@@ -34,7 +34,7 @@ class FTP:
 			t.setDaemon(True)
 			t.start()
 		except Exception as e:
-			print "Error starting SMB server: {}".format(e)
+			print(("Error starting SMB server: {}".format(e)))
 			print_exc()
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):

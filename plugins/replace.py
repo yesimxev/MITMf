@@ -40,8 +40,8 @@ class Replace(Plugin):
 
         if "text/html" in mime:
 
-            for rulename, regexs in self.config['Replace'].iteritems():
-                for regex1,regex2 in regexs.iteritems():
+            for rulename, regexs in list(self.config['Replace'].items()):
+                for regex1,regex2 in list(regexs.items()):
                     if re.search(regex1, data):
                         try:
                             data = re.sub(regex1, regex2, data)
